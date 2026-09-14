@@ -7,6 +7,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.0](https://github.com/German-git/harmonium/releases/tag/v0.1.0) - 2026-09-14
+
+### Other
+
+- use release token for release PRs
+- install SoundTouch native dependency
+- removed Git prerequisite
+- add Git prerequisite
+- Update license section in README.md
+- Initial commit
+- Initial commit
+
 ### Added
 
 - Added Page Up and Page Down navigation to the saved-playlist manager.
