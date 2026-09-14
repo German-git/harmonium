@@ -37,6 +37,7 @@ jobs:
             libasound2-dev \
             libpipewire-0.3-dev \
             pkg-config \
+            libsoundtouch-dev \
             build-essential \
             libclang-dev
 
