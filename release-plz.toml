@@ -1,0 +1,14 @@
+[workspace]
+git_only = true
+release_always = false
+# Release PRs and version changes are driven by Conventional Commit types.
+release_commits = "^(build|chore|ci|docs|feat|fix|perf|refactor|revert|style|test)(\\([^)]+\\))?!?:"
+
+[[package]]
+name = "harmonium"
+changelog_update = true
+changelog_path = "CHANGELOG.md"
+publish = false
+git_release_enable = true
+git_tag_enable = true
+git_tag_name = "v{{ version }}"

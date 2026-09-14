@@ -1,0 +1,61 @@
+name: Release binary
+
+on:
+  release:
+    types: [published]
+
+permissions:
+  contents: write
+
+jobs:
+  package:
+    name: Package Linux binary
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    env:
+      RELEASE_TAG: ${{ github.event.release.tag_name }}
+      TARGET: x86_64-unknown-linux-gnu
+    steps:
+      - name: Validate release tag
+        shell: bash
+        run: |
+          if [[ ! "$RELEASE_TAG" =~ ^v(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)\.(0|[1-9][0-9]*)$ ]]; then
+            printf 'Release tag must match vMAJOR.MINOR.PATCH: %s\n' "$RELEASE_TAG" >&2
+            exit 1
+          fi
+
+      - name: Check out published tag
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.release.tag_name }}
+          fetch-depth: 0
+
+      - name: Install native dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install --no-install-recommends -y \
+            libasound2-dev \
+            libpipewire-0.3-dev \
+            pkg-config \
+            build-essential \
+            libclang-dev
+
+      - name: Install Rust 1.98.0
+        uses: dtolnay/rust-toolchain@1.98.0
+        with:
+          components: rustfmt, clippy
+
+      - name: Build optimized release binary
+        run: cargo build --release --locked --bin harmonium
+
+      - name: Package binary
+        run: |
+          ARCHIVE="harmonium-${RELEASE_TAG}-${TARGET}.tar.gz"
+          tar -czf "$ARCHIVE" -C target/release harmonium
+          sha256sum "$ARCHIVE" > "$ARCHIVE.sha256"
+          printf 'ARCHIVE=%s\n' "$ARCHIVE" >> "$GITHUB_ENV"
+
+      - name: Upload archive to published release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: gh release upload "$RELEASE_TAG" "$ARCHIVE" "$ARCHIVE.sha256" --clobber
