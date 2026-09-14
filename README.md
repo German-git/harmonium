@@ -46,6 +46,7 @@ first release have not been provided.
 - A C++ toolchain (e.g. `g++` or `clang`) to build the bundled SoundTouch FFI bridge used for playback speed
 - ALSA development libraries (required by the default `cpal` backend)
 - A terminal with at least Unicode support (Kitty, iTerm2, Sixel, or VTE-based terminals all work)
+- Recommended: use the latest stable version of Git.
 
 ### Supported build profile
 
