@@ -155,5 +155,4 @@ cargo test --all-targets --no-fail-fast -- --test-threads=1
 
 ## License
 
-Harmonium declares the BSD 3-Clause License in `Cargo.toml`. The repository does
-not currently provide packaged releases or a separate license file.
+Harmonium declares the BSD 3-Clause License in `Cargo.toml`.
